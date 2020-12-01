@@ -89,7 +89,7 @@ func getPeopleById(ctx context.Context, client clientGRPCProto.RPCServiceClient,
 func main() {
 	var conn *grpc.ClientConn
 	ctx := context.Background()
-	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+	conn, err := grpc.Dial("10.8.0.1:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
