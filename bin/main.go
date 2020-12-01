@@ -8,7 +8,8 @@ import (
 	"io"
 	"log"
 )
-func getPerson(ctx context.Context, client clientGRPCProto.RPCServiceClient, number string, phoneType clientGRPCProto.PhoneType) *clientGRPCProto.Person{
+
+func getPerson(ctx context.Context, client clientGRPCProto.RPCServiceClient, number string, phoneType clientGRPCProto.PhoneType) *clientGRPCProto.Person {
 	phone := &clientGRPCProto.PhoneNumber{Number: &number, Type: &phoneType}
 	person, err := client.GetPersonByPhoneNumber(ctx, phone)
 	if err != nil {
@@ -42,7 +43,7 @@ func editPeople(ctx context.Context, client clientGRPCProto.RPCServiceClient, pe
 func listPeople(ctx context.Context, client clientGRPCProto.RPCServiceClient, number *clientGRPCProto.PhoneNumber) {
 	stream, err := client.ListPeopleByPhoneType(ctx, number)
 	if err != nil {
-		fmt.Println("error with stream, "+err.Error())
+		fmt.Println("error with stream, " + err.Error())
 		return
 	}
 	for {
@@ -53,7 +54,7 @@ func listPeople(ctx context.Context, client clientGRPCProto.RPCServiceClient, nu
 		if err != nil {
 			log.Fatalf("%v.ListPeople(_) = _, %v", client, err)
 		}
-		fmt.Println(person.Name)
+		fmt.Println(*person.Name)
 	}
 }
 func getPeopleById(ctx context.Context, client clientGRPCProto.RPCServiceClient, ids []clientGRPCProto.RequestId) {
@@ -97,7 +98,7 @@ func main() {
 	number := "4365365432"
 	phoneType := clientGRPCProto.PhoneType_HOME
 
-	fmt.Println("--------- GET A PERSON WITH NUMBER: "+number+" ----------")
+	fmt.Println("--------- GET A PERSON WITH NUMBER: " + number + " ----------")
 	person := getPerson(ctx, client, number, phoneType)
 
 	fmt.Println("-------- Editing John Doe in Giovanni Doe and Mario Rossi in Mario Bianchi --------")
@@ -122,8 +123,5 @@ func main() {
 	ids[0].Id = &id1
 	ids[1].Id = &id2
 	getPeopleById(ctx, client, ids)
-
-	fmt.Println("------ Listing People with at least a number of type HOME --------")
-	listPeople(ctx, client, &clientGRPCProto.PhoneNumber{Number: &number, Type: &phoneType})
 
 }
