@@ -75,7 +75,7 @@ func getPeopleById(ctx context.Context, client clientGRPCProto.RPCServiceClient,
 			if err != nil {
 				log.Fatalf("Failed to receive a request : %v", err)
 			}
-			log.Printf("Got person %s", *in.Name)
+			fmt.Println("Person: " + *in.Name)
 		}
 	}()
 	for _, id := range ids {
