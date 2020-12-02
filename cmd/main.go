@@ -9,7 +9,7 @@ import (
 	"log"
 )
 
-func getPerson(ctx context.Context, client clientGRPCProto.RPCServiceClient, number string, phoneType clientGRPCProto.PhoneType) *clientGRPCProto.Person {
+func getPersonByPhoneNumber(ctx context.Context, client clientGRPCProto.RPCServiceClient, number string, phoneType clientGRPCProto.PhoneType) *clientGRPCProto.Person {
 	phone := &clientGRPCProto.PhoneNumber{Number: &number, Type: &phoneType}
 	person, err := client.GetPersonByPhoneNumber(ctx, phone)
 	if err != nil {
@@ -99,17 +99,17 @@ func main() {
 	phoneType := clientGRPCProto.PhoneType_HOME
 
 	fmt.Println("--------- GET A PERSON WITH NUMBER: " + number + " ----------")
-	person := getPerson(ctx, client, number, phoneType)
+	person := getPersonByPhoneNumber(ctx, client, number, phoneType)
 
 	fmt.Println("-------- Editing John Doe in Giovanni Doe and Mario Rossi in Mario Bianchi --------")
 	newName := "Giovanni Doe"
 	person.Name = &newName
 	number = "452376467"
-	person2 := getPerson(ctx, client, number, phoneType)
+	person2 := getPersonByPhoneNumber(ctx, client, number, phoneType)
 	newName2 := "Mario Bianchi"
 	person2.Name = &newName2
 	editPeople(ctx, client, []clientGRPCProto.Person{*person, *person2})
-	getPerson(ctx, client, number, phoneType)
+	getPersonByPhoneNumber(ctx, client, number, phoneType)
 
 	fmt.Println("------ Listing People with at least a number of type HOME --------")
 	listPeople(ctx, client, &clientGRPCProto.PhoneNumber{Number: &number, Type: &phoneType})
